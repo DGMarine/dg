@@ -1,6 +1,11 @@
 const express = require('express');
+const cors = require('cors'); // Import CORS library
 const fetch = require('node-fetch');
+
 const app = express();
+
+// Enable CORS for all routes
+app.use(cors());
 
 app.get('/stock/:symbol', async (req, res) => {
   const symbol = req.params.symbol;
@@ -11,8 +16,11 @@ app.get('/stock/:symbol', async (req, res) => {
     const data = await response.json();
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching data' });
+    res.status(500).json({ error: 'Error fetching data.' });
   }
 });
 
-app.listen(3000, () => console.log('Server is running on port 3000'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
